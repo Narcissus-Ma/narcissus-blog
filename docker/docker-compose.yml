@@ -1,0 +1,16 @@
+services:
+  nest-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.server
+    restart: always
+    env_file:
+      - ../apps/server/.env
+    ports:
+      - '3000:3000'
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M

@@ -1,0 +1,29 @@
+.page {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  padding: 16px;
+}
+
+.title {
+  margin: 0 0 14px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px dashed var(--card-border);
+  padding: 10px 0;
+}
+
+.item span {
+  width: 100px;
+  flex-shrink: 0;
+  color: var(--second-text);
+}

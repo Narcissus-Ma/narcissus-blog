@@ -1,0 +1,40 @@
+.article {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-border);
+  padding: 20px;
+}
+
+.header {
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.meta {
+  margin: 8px 0 0;
+  color: var(--second-text);
+}
+
+.markdown {
+  overflow-x: auto;
+}
+
+.markdown :global(pre) {
+  border-radius: var(--radius-sm);
+  background: rgba(125, 125, 125, 0.1);
+  padding: 12px;
+}
+
+.state {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  padding: 20px;
+}

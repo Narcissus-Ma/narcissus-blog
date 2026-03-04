@@ -1,0 +1,17 @@
+{
+  "name": "@narcissus/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "echo 'shared lint: 请在安装依赖后执行 eslint'",
+    "test": "echo 'shared test: 暂无测试'"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

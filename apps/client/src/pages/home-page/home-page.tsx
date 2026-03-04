@@ -1,0 +1,75 @@
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
+
+import styles from './home-page.module.css';
+
+import { CategoryBar } from '@/components/molecules/category-bar/category-bar';
+import { PaginationBar } from '@/components/molecules/pagination-bar/pagination-bar';
+import { PostCard } from '@/components/molecules/post-card/post-card';
+import { HeroBanner } from '@/components/organisms/hero-banner/hero-banner';
+import { SidebarPanel } from '@/components/organisms/sidebar-panel/sidebar-panel';
+import { articlesService } from '@/features/articles/services/articles-service';
+import { taxonomyService } from '@/features/taxonomy/services/taxonomy-service';
+
+export function HomePage() {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const { data: articleResult, isLoading } = useQuery({
+    queryKey: ['public-articles', page, pageSize],
+    queryFn: () => articlesService.getPublicList({ page, pageSize }),
+  });
+
+  const { data: categories = [] } = useQuery({
+    queryKey: ['public-categories'],
+    queryFn: taxonomyService.getPublicCategories,
+  });
+
+  const { data: tags = [] } = useQuery({
+    queryKey: ['public-tags'],
+    queryFn: taxonomyService.getPublicTags,
+  });
+
+  const categoryBarItems = useMemo(
+    () =>
+      categories
+        .slice(0, 8)
+        .map((item) => ({ name: item.name, path: `/categories?slug=${item.slug}` })),
+    [categories],
+  );
+
+  const featuredArticle = articleResult?.list[0];
+
+  return (
+    <div className={styles.container}>
+      <HeroBanner featuredTitle={featuredArticle?.title} featuredSlug={featuredArticle?.slug} />
+      <CategoryBar items={categoryBarItems} />
+
+      <div className={styles.layout}>
+        <section className={styles.posts}>
+          {isLoading ? <div className={styles.state}>正在加载文章...</div> : null}
+          {!isLoading && articleResult?.list.length === 0 ? (
+            <div className={styles.state}>暂无文章，请先在后台发布内容。</div>
+          ) : null}
+          <div className={styles.grid}>
+            {articleResult?.list.map((item) => (
+              <PostCard key={item.id} item={item} />
+            ))}
+          </div>
+          <div className={styles.pagination}>
+            <PaginationBar
+              page={page}
+              pageSize={pageSize}
+              total={articleResult?.total ?? 0}
+              onChange={(nextPage, nextPageSize) => {
+                setPage(nextPage);
+                setPageSize(nextPageSize);
+              }}
+            />
+          </div>
+        </section>
+        <SidebarPanel categories={categories} tags={tags} />
+      </div>
+    </div>
+  );
+}

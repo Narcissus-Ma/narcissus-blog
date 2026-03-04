@@ -1,0 +1,44 @@
+.aside {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-border);
+  padding: 16px;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.text {
+  margin: 0;
+  color: var(--second-text);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  border-radius: 20px;
+  background: rgba(66, 90, 239, 0.12);
+  padding: 4px 10px;
+  color: var(--font-color);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 1200px) {
+  .aside {
+    width: 100%;
+  }
+}
