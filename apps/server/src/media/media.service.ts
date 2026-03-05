@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { PrismaService } from '../prisma/prisma.service';
@@ -50,5 +50,21 @@ export class MediaService {
       orderBy: { createdAt: 'desc' },
       take: 200,
     });
+  }
+
+  async removeAsset(id: string) {
+    const existing = await this.prismaService.mediaAsset.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      throw new NotFoundException('资源不存在');
+    }
+
+    await this.prismaService.mediaAsset.delete({
+      where: { id },
+    });
+
+    return { id };
   }
 }

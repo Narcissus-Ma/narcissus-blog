@@ -59,7 +59,10 @@ export function AdminArticlesPage() {
   return (
     <section className={styles.page}>
       <div className={styles.header}>
-        <h1>文章管理</h1>
+        <div className={styles.headerLeft}>
+          <h1>文章管理</h1>
+          <span className={styles.subTitle}>维护博客文章内容与发布状态</span>
+        </div>
         <Button type="primary" onClick={() => setOpen(true)}>
           新建文章
         </Button>

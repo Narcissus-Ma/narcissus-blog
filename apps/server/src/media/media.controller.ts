@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser, CurrentUserPayload } from '../common/decorators/current-user.decorator';
@@ -23,5 +23,10 @@ export class MediaController {
   @Get()
   async listAssets() {
     return this.mediaService.listAssets();
+  }
+
+  @Delete(':id')
+  async removeAsset(@Param('id') id: string) {
+    return this.mediaService.removeAsset(id);
   }
 }

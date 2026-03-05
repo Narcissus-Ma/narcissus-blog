@@ -1,9 +1,14 @@
 import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
+import { AdminLayout } from '@/layouts/admin-layout/admin-layout';
 import { BlogLayout } from '@/layouts/blog-layout/blog-layout';
 import { AdminArticlesPage } from '@/pages/admin-articles-page/admin-articles-page';
+import { AdminCategoriesPage } from '@/pages/admin-categories-page/admin-categories-page';
 import { AdminDashboardPage } from '@/pages/admin-dashboard-page/admin-dashboard-page';
 import { AdminLoginPage } from '@/pages/admin-login-page/admin-login-page';
+import { AdminMediaPage } from '@/pages/admin-media-page/admin-media-page';
+import { AdminSettingsPage } from '@/pages/admin-settings-page/admin-settings-page';
+import { AdminTagsPage } from '@/pages/admin-tags-page/admin-tags-page';
 import { ArchivesPage } from '@/pages/archives-page/archives-page';
 import { CategoriesPage } from '@/pages/categories-page/categories-page';
 import { HomePage } from '@/pages/home-page/home-page';
@@ -27,6 +32,19 @@ export function AppRouter() {
   return (
     <Router>
       <Routes>
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+
+        <Route element={<RequireAuth />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/admin/articles" element={<AdminArticlesPage />} />
+            <Route path="/admin/categories" element={<AdminCategoriesPage />} />
+            <Route path="/admin/tags" element={<AdminTagsPage />} />
+            <Route path="/admin/media" element={<AdminMediaPage />} />
+            <Route path="/admin/settings" element={<AdminSettingsPage />} />
+          </Route>
+        </Route>
+
         <Route element={<BlogLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/post/:slug" element={<PostDetailPage />} />
@@ -34,11 +52,6 @@ export function AppRouter() {
           <Route path="/tags" element={<TagsPage />} />
           <Route path="/archives" element={<ArchivesPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route element={<RequireAuth />}>
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/admin/articles" element={<AdminArticlesPage />} />
-          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
