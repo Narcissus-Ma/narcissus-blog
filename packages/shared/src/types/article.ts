@@ -33,6 +33,7 @@ export interface CreateArticleRequest {
   seoTitle?: string;
   seoDescription?: string;
   publishedAt?: string;
+  isTop?: boolean;
 }
 
 export interface UpdateArticleRequest extends Partial<CreateArticleRequest> {}

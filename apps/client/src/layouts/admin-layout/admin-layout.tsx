@@ -59,14 +59,22 @@ export function AdminLayout() {
   }, []);
 
   const currentMenu = useMemo(
-    () => MENU_ITEMS.find((item) => location.pathname.startsWith(item.path)),
+    () =>
+      MENU_ITEMS.filter((item) =>
+        item.path === '/admin'
+          ? location.pathname === '/admin'
+          : location.pathname.startsWith(item.path),
+      ).sort((a, b) => b.path.length - a.path.length)[0],
     [location.pathname],
   );
 
   const menuContent = (
     <nav className={styles.menu}>
       {MENU_ITEMS.map((item) => {
-        const active = location.pathname === item.path;
+        const active =
+          item.path === '/admin'
+            ? location.pathname === '/admin'
+            : location.pathname.startsWith(item.path);
         return (
           <Link
             key={item.path}

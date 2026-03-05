@@ -1,6 +1,7 @@
 import type {
   ArticleDetail,
   ArticleSummary,
+  ArticleStatus,
   CreateArticleRequest,
   PaginationResult,
   UpdateArticleRequest,
@@ -13,6 +14,13 @@ export interface ArticleQuery {
   pageSize?: number;
   keyword?: string;
   status?: 'draft' | 'published';
+}
+
+export interface AdminArticleDetail extends ArticleDetail {
+  categoryId: string | null;
+  tagIds: string[];
+  isTop: boolean;
+  status: ArticleStatus;
 }
 
 export const articlesService = {
@@ -28,17 +36,17 @@ export const articlesService = {
     const response = await apiClient.get('/articles', { params: query });
     return unwrapResponse<PaginationResult<ArticleSummary>>(response);
   },
-  async getAdminDetail(id: string): Promise<ArticleDetail> {
+  async getAdminDetail(id: string): Promise<AdminArticleDetail> {
     const response = await apiClient.get(`/articles/${id}`);
-    return unwrapResponse<ArticleDetail>(response);
+    return unwrapResponse<AdminArticleDetail>(response);
   },
   async create(payload: CreateArticleRequest): Promise<ArticleSummary> {
     const response = await apiClient.post('/articles', payload);
     return unwrapResponse<ArticleSummary>(response);
   },
-  async update(id: string, payload: UpdateArticleRequest): Promise<ArticleDetail> {
+  async update(id: string, payload: UpdateArticleRequest): Promise<AdminArticleDetail> {
     const response = await apiClient.patch(`/articles/${id}`, payload);
-    return unwrapResponse<ArticleDetail>(response);
+    return unwrapResponse<AdminArticleDetail>(response);
   },
   async remove(id: string): Promise<{ id: string }> {
     const response = await apiClient.delete(`/articles/${id}`);

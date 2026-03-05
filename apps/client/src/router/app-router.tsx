@@ -2,6 +2,8 @@ import { Navigate, Outlet, Route, BrowserRouter as Router, Routes } from 'react-
 
 import { AdminLayout } from '@/layouts/admin-layout/admin-layout';
 import { BlogLayout } from '@/layouts/blog-layout/blog-layout';
+import { AdminArticleCreatePage } from '@/pages/admin-article-create-page/admin-article-create-page';
+import { AdminArticleEditPage } from '@/pages/admin-article-edit-page/admin-article-edit-page';
 import { AdminArticlesPage } from '@/pages/admin-articles-page/admin-articles-page';
 import { AdminCategoriesPage } from '@/pages/admin-categories-page/admin-categories-page';
 import { AdminDashboardPage } from '@/pages/admin-dashboard-page/admin-dashboard-page';
@@ -38,6 +40,8 @@ export function AppRouter() {
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminDashboardPage />} />
             <Route path="/admin/articles" element={<AdminArticlesPage />} />
+            <Route path="/admin/articles/new" element={<AdminArticleCreatePage />} />
+            <Route path="/admin/articles/:id/edit" element={<AdminArticleEditPage />} />
             <Route path="/admin/categories" element={<AdminCategoriesPage />} />
             <Route path="/admin/tags" element={<AdminTagsPage />} />
             <Route path="/admin/media" element={<AdminMediaPage />} />
