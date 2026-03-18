@@ -13,10 +13,12 @@ import { AdminSettingsPage } from '@/pages/admin-settings-page/admin-settings-pa
 import { AdminTagsPage } from '@/pages/admin-tags-page/admin-tags-page';
 import { ArchivesPage } from '@/pages/archives-page/archives-page';
 import { CategoriesPage } from '@/pages/categories-page/categories-page';
+import { CategoryDetailPage } from '@/pages/category-detail-page/category-detail-page';
 import { HomePage } from '@/pages/home-page/home-page';
 import { NotFoundPage } from '@/pages/not-found-page/not-found-page';
 import { PostDetailPage } from '@/pages/post-detail-page/post-detail-page';
 import { SearchPage } from '@/pages/search-page/search-page';
+import { TagDetailPage } from '@/pages/tag-detail-page/tag-detail-page';
 import { TagsPage } from '@/pages/tags-page/tags-page';
 import { useAuthStore } from '@/stores/auth-store';
 
@@ -53,7 +55,9 @@ export function AppRouter() {
           <Route path="/" element={<HomePage />} />
           <Route path="/post/:slug" element={<PostDetailPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/categories/:slug" element={<CategoryDetailPage />} />
           <Route path="/tags" element={<TagsPage />} />
+          <Route path="/tags/:slug" element={<TagDetailPage />} />
           <Route path="/archives" element={<ArchivesPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<NotFoundPage />} />

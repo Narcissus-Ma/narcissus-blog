@@ -6,4 +6,12 @@ export class ArticleQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsString()
   status?: 'draft' | 'published';
+
+  @IsOptional()
+  @IsString()
+  categorySlug?: string;
+
+  @IsOptional()
+  @IsString()
+  tagSlug?: string;
 }

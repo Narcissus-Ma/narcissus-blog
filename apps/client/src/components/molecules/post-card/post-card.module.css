@@ -43,6 +43,15 @@
   font-size: 0.8rem;
 }
 
+.metaLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.metaLink:hover {
+  color: var(--main-color);
+}
+
 .title {
   display: -webkit-box;
   overflow: hidden;
@@ -68,6 +77,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   color: var(--second-text);
   font-size: 0.8rem;
+}
+
+.tagWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
 }

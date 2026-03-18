@@ -1,4 +1,5 @@
 import type { CategoryItem, TagItem } from '@narcissus/shared';
+import { Link } from 'react-router-dom';
 
 import styles from './sidebar-panel.module.css';
 
@@ -18,9 +19,9 @@ export function SidebarPanel({ categories, tags }: SidebarPanelProps) {
         <h3 className={styles.title}>分类</h3>
         <div className={styles.list}>
           {categories.map((item) => (
-            <span key={item.id} className={styles.pill}>
+            <Link key={item.id} className={styles.pill} to={`/categories/${item.slug}`}>
               {item.name} ({item.articleCount})
-            </span>
+            </Link>
           ))}
         </div>
       </section>
@@ -28,9 +29,9 @@ export function SidebarPanel({ categories, tags }: SidebarPanelProps) {
         <h3 className={styles.title}>标签</h3>
         <div className={styles.list}>
           {tags.map((item) => (
-            <span key={item.id} className={styles.pill}>
+            <Link key={item.id} className={styles.pill} to={`/tags/${item.slug}`}>
               #{item.name}
-            </span>
+            </Link>
           ))}
         </div>
       </section>

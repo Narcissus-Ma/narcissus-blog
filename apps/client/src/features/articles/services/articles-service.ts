@@ -14,6 +14,8 @@ export interface ArticleQuery {
   pageSize?: number;
   keyword?: string;
   status?: 'draft' | 'published';
+  categorySlug?: string;
+  tagSlug?: string;
 }
 
 export interface AdminArticleDetail extends ArticleDetail {

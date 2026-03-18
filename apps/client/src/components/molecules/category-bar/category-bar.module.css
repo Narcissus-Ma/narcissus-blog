@@ -34,6 +34,11 @@
   color: #fff;
 }
 
+.itemActive {
+  background: rgba(66, 90, 239, 0.15);
+  color: var(--main-color);
+}
+
 .more {
   margin-left: 10px;
   font-weight: 600;

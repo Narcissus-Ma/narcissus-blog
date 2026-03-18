@@ -118,7 +118,11 @@ export const ArticleEditorForm = forwardRef<ArticleEditorFormRef, ArticleEditorF
               children: (
                 <div className={styles.pane}>
                   <div className={styles.grid2}>
-                    <Form.Item label="标题" name="title" rules={[{ required: true, message: '请输入文章标题' }]}>
+                    <Form.Item
+                      label="标题"
+                      name="title"
+                      rules={[{ required: true, message: '请输入文章标题' }]}
+                    >
                       <Input
                         placeholder="请输入文章标题"
                         onBlur={(event) => {
@@ -133,7 +137,11 @@ export const ArticleEditorForm = forwardRef<ArticleEditorFormRef, ArticleEditorF
                         }}
                       />
                     </Form.Item>
-                    <Form.Item label="Slug" name="slug" rules={[{ required: true, message: '请输入文章 slug' }]}>
+                    <Form.Item
+                      label="Slug"
+                      name="slug"
+                      rules={[{ required: true, message: '请输入文章 slug' }]}
+                    >
                       <Input placeholder="请输入文章 slug，例如 react-hooks-guide" />
                     </Form.Item>
                     <Form.Item label="分类" name="categoryId">

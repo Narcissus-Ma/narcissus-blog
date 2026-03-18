@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 import styles from './tags-page.module.css';
 
@@ -15,9 +16,9 @@ export function TagsPage() {
       <h1 className={styles.title}>标签</h1>
       <div className={styles.wrap}>
         {data.map((item) => (
-          <span key={item.id} className={styles.tag}>
+          <Link key={item.id} className={styles.tag} to={`/tags/${item.slug}`}>
             #{item.name} ({item.articleCount})
-          </span>
+          </Link>
         ))}
       </div>
     </section>

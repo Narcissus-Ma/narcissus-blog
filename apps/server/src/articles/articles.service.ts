@@ -17,8 +17,8 @@ function mapArticleSummary(article: {
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
-  category: { name: string } | null;
-  articleTag: { tag: { name: string } }[];
+  category: { id: string; name: string; slug: string } | null;
+  articleTag: { tag: { id: string; name: string; slug: string } }[];
 }) {
   return {
     id: article.id,
@@ -27,7 +27,14 @@ function mapArticleSummary(article: {
     excerpt: article.excerpt,
     coverUrl: article.coverUrl,
     status: article.status,
+    categoryId: article.category?.id ?? null,
+    categorySlug: article.category?.slug ?? null,
     categoryName: article.category?.name ?? '',
+    tagItems: article.articleTag.map((item) => ({
+      id: item.tag.id,
+      name: item.tag.name,
+      slug: item.tag.slug,
+    })),
     tags: article.articleTag.map((item) => item.tag.name),
     createdAt: article.createdAt.toISOString(),
     updatedAt: article.updatedAt.toISOString(),
@@ -44,6 +51,20 @@ export class ArticlesService {
     const pageSize = query.pageSize ?? 10;
     const where: Prisma.ArticleWhereInput = {
       status: 'published',
+      category: query.categorySlug
+        ? {
+            slug: query.categorySlug,
+          }
+        : undefined,
+      articleTag: query.tagSlug
+        ? {
+            some: {
+              tag: {
+                slug: query.tagSlug,
+              },
+            },
+          }
+        : undefined,
       OR: query.keyword
         ? [
             { title: { contains: query.keyword } },
@@ -59,8 +80,8 @@ export class ArticlesService {
         skip: (page - 1) * pageSize,
         take: pageSize,
         include: {
-          category: { select: { name: true } },
-          articleTag: { include: { tag: { select: { name: true } } } },
+          category: { select: { id: true, name: true, slug: true } },
+          articleTag: { include: { tag: { select: { id: true, name: true, slug: true } } } },
         },
         orderBy: [{ isTop: 'desc' }, { publishedAt: 'desc' }, { createdAt: 'desc' }],
       }),
@@ -95,8 +116,8 @@ export class ArticlesService {
         skip: (page - 1) * pageSize,
         take: pageSize,
         include: {
-          category: { select: { name: true } },
-          articleTag: { include: { tag: { select: { name: true } } } },
+          category: { select: { id: true, name: true, slug: true } },
+          articleTag: { include: { tag: { select: { id: true, name: true, slug: true } } } },
         },
         orderBy: [{ updatedAt: 'desc' }],
       }),
@@ -127,19 +148,46 @@ export class ArticlesService {
       throw new NotFoundException('文章不存在');
     }
 
+    const [prevArticle, nextArticle] = await this.prismaService.$transaction([
+      this.prismaService.article.findFirst({
+        where: {
+          status: 'published',
+          createdAt: {
+            gt: article.createdAt,
+          },
+        },
+        select: {
+          title: true,
+          slug: true,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+      }),
+      this.prismaService.article.findFirst({
+        where: {
+          status: 'published',
+          createdAt: {
+            lt: article.createdAt,
+          },
+        },
+        select: {
+          title: true,
+          slug: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+    ]);
+
     return {
       ...mapArticleSummary(article),
       content: article.content,
       seoTitle: article.seoTitle,
       seoDescription: article.seoDescription,
-      categoryId: article.category?.id ?? null,
-      categorySlug: article.category?.slug ?? null,
-      tagIds: article.articleTag.map((item) => item.tag.id),
-      tagItems: article.articleTag.map((item) => ({
-        id: item.tag.id,
-        name: item.tag.name,
-        slug: item.tag.slug,
-      })),
+      prevPost: prevArticle,
+      nextPost: nextArticle,
     };
   }
 
@@ -147,7 +195,7 @@ export class ArticlesService {
     const article = await this.prismaService.article.findUnique({
       where: { id },
       include: {
-        category: { select: { id: true, name: true } },
+        category: { select: { id: true, name: true, slug: true } },
         articleTag: { include: { tag: true } },
       },
     });
@@ -191,8 +239,8 @@ export class ArticlesService {
           : undefined,
       },
       include: {
-        category: { select: { name: true } },
-        articleTag: { include: { tag: { select: { name: true } } } },
+        category: { select: { id: true, name: true, slug: true } },
+        articleTag: { include: { tag: { select: { id: true, name: true, slug: true } } } },
       },
     });
 

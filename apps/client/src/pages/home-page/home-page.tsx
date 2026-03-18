@@ -32,9 +32,7 @@ export function HomePage() {
 
   const categoryBarItems = useMemo(
     () =>
-      categories
-        .slice(0, 8)
-        .map((item) => ({ name: item.name, path: `/categories?slug=${item.slug}` })),
+      categories.slice(0, 8).map((item) => ({ name: item.name, path: `/categories/${item.slug}` })),
     [categories],
   );
 

@@ -1,5 +1,16 @@
 export type ArticleStatus = 'draft' | 'published';
 
+export interface ArticleTagSummary {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface AdjacentPostSummary {
+  title: string;
+  slug: string;
+}
+
 export interface ArticleSummary {
   id: string;
   title: string;
@@ -8,7 +19,9 @@ export interface ArticleSummary {
   coverUrl: string;
   status: ArticleStatus;
   categoryId: string | null;
+  categorySlug: string | null;
   categoryName: string;
+  tagItems: ArticleTagSummary[];
   tags: string[];
   createdAt: string;
   updatedAt: string;
@@ -19,6 +32,8 @@ export interface ArticleDetail extends ArticleSummary {
   content: string;
   seoTitle: string;
   seoDescription: string;
+  prevPost?: AdjacentPostSummary | null;
+  nextPost?: AdjacentPostSummary | null;
 }
 
 export interface CreateArticleRequest {

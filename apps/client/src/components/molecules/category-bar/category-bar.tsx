@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import styles from './category-bar.module.css';
 
@@ -15,13 +15,20 @@ export function CategoryBar({ items }: CategoryBarProps) {
   return (
     <div className={styles.wrap}>
       <div className={styles.list}>
-        <Link className={styles.item} to="/">
+        <NavLink
+          className={({ isActive }) => `${styles.item} ${isActive ? styles.itemActive : ''}`}
+          to="/"
+        >
           首页
-        </Link>
+        </NavLink>
         {items.map((item) => (
-          <Link key={item.path} className={styles.item} to={item.path}>
+          <NavLink
+            key={item.path}
+            className={({ isActive }) => `${styles.item} ${isActive ? styles.itemActive : ''}`}
+            to={item.path}
+          >
             {item.name}
-          </Link>
+          </NavLink>
         ))}
       </div>
       <Link className={styles.more} to="/categories">

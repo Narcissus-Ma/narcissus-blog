@@ -35,6 +35,11 @@
   padding: 4px 10px;
   color: var(--font-color);
   font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.pill:hover {
+  background: rgba(66, 90, 239, 0.2);
 }
 
 @media (max-width: 1200px) {

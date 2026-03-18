@@ -19,14 +19,29 @@ export function PostCard({ item }: PostCardProps) {
         />
       </Link>
       <div className={styles.content}>
-        <div className={styles.meta}>{item.categoryName || '未分类'}</div>
+        <div className={styles.meta}>
+          {item.categorySlug ? (
+            <Link className={styles.metaLink} to={`/categories/${item.categorySlug}`}>
+              {item.categoryName || '未分类'}
+            </Link>
+          ) : (
+            item.categoryName || '未分类'
+          )}
+        </div>
         <Link className={styles.title} to={`/post/${item.slug}`}>
           {item.title}
         </Link>
         <p className={styles.excerpt}>{item.excerpt || '暂无摘要内容。'}</p>
         <div className={styles.footer}>
           <span>{dayjs(item.publishedAt || item.createdAt).format('YYYY-MM-DD')}</span>
-          <span>{item.tags.slice(0, 2).join(' / ') || '无标签'}</span>
+          <span className={styles.tagWrap}>
+            {(item.tagItems.length > 0 ? item.tagItems.slice(0, 2) : []).map((tag) => (
+              <Link key={tag.id} className={styles.metaLink} to={`/tags/${tag.slug}`}>
+                #{tag.name}
+              </Link>
+            ))}
+            {item.tagItems.length === 0 ? '无标签' : null}
+          </span>
         </div>
       </div>
     </article>

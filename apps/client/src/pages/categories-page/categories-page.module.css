@@ -19,6 +19,13 @@
   border: 1px solid var(--card-border);
   border-radius: var(--radius-sm);
   padding: 12px;
+  color: var(--font-color);
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--main-color);
 }
 
 .card h3 {

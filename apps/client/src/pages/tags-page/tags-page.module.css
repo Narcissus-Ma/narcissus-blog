@@ -19,4 +19,10 @@
   border-radius: 20px;
   background: rgba(66, 90, 239, 0.12);
   padding: 5px 10px;
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+.tag:hover {
+  background: rgba(66, 90, 239, 0.2);
 }
