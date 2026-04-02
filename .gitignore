@@ -9,3 +9,4 @@ coverage
 *.tsbuildinfo
 apps/server/prisma/dev.db
 apps/server/prisma/dev.db-journal
+docs/hexo-theme-anzhiyu-dev
