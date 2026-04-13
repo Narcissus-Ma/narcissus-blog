@@ -20,6 +20,7 @@ export function useSiteBootstrap() {
           siteName: setting.siteName,
           siteDescription: setting.siteDescription,
           navItems: setting.navItems,
+          popupNotice: setting.popupNotice,
         });
       })
       .catch(() => {

@@ -6,6 +6,7 @@ import { articlesService } from '@/features/articles/services/articles-service';
 export function useHeaderActions() {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [isRandomLoading, setIsRandomLoading] = useState(false);
 
@@ -15,6 +16,14 @@ export function useHeaderActions() {
 
   const closeSearch = () => {
     setIsSearchOpen(false);
+  };
+
+  const openConsole = () => {
+    setIsConsoleOpen(true);
+  };
+
+  const closeConsole = () => {
+    setIsConsoleOpen(false);
   };
 
   const goSearchPage = (value: string) => {
@@ -46,11 +55,14 @@ export function useHeaderActions() {
 
   return {
     isRandomLoading,
+    isConsoleOpen,
     isSearchOpen,
+    closeConsole,
     keyword,
     closeSearch,
     goRandomPost,
     goSearchPage,
+    openConsole,
     openSearch,
     setKeyword,
   };

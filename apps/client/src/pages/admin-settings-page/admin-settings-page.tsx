@@ -1,7 +1,7 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import type { SiteSetting } from '@narcissus/shared';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Card, Form, Input, Space, message } from 'antd';
+import { Button, Card, Checkbox, Form, Input, Space, message } from 'antd';
 import { useEffect } from 'react';
 
 import styles from './admin-settings-page.module.css';
@@ -54,6 +54,14 @@ export function AdminSettingsPage() {
             defaultSeoTitle: values.defaultSeoTitle ?? '',
             defaultSeoDescription: values.defaultSeoDescription ?? '',
             defaultOgImage: values.defaultOgImage ?? '',
+            popupNotice: {
+              enabled: values.popupNotice?.enabled ?? false,
+              title: values.popupNotice?.title ?? '通知',
+              message: values.popupNotice?.message ?? '你好呀',
+              ctaText: values.popupNotice?.ctaText ?? '查看更多',
+              ctaLink: values.popupNotice?.ctaLink ?? '/about',
+              homeOnly: values.popupNotice?.homeOnly ?? true,
+            },
           });
         }}
       >
@@ -137,6 +145,45 @@ export function AdminSettingsPage() {
               </>
             )}
           </Form.List>
+        </Card>
+
+        <Card title="互动弹窗" loading={isLoading}>
+          <div className={styles.grid2}>
+            <Form.Item label="启用弹窗" name={['popupNotice', 'enabled']} valuePropName="checked">
+              <Checkbox>开启首页提示</Checkbox>
+            </Form.Item>
+            <Form.Item label="仅首页展示" name={['popupNotice', 'homeOnly']} valuePropName="checked">
+              <Checkbox>限制首页展示</Checkbox>
+            </Form.Item>
+            <Form.Item
+              label="弹窗标题"
+              name={['popupNotice', 'title']}
+              rules={[{ required: true, message: '请输入弹窗标题' }]}
+            >
+              <Input placeholder="请输入弹窗标题" />
+            </Form.Item>
+            <Form.Item
+              label="按钮文案"
+              name={['popupNotice', 'ctaText']}
+              rules={[{ required: true, message: '请输入按钮文案' }]}
+            >
+              <Input placeholder="请输入按钮文案" />
+            </Form.Item>
+          </div>
+          <Form.Item
+            label="弹窗内容"
+            name={['popupNotice', 'message']}
+            rules={[{ required: true, message: '请输入弹窗内容' }]}
+          >
+            <Input.TextArea rows={3} placeholder="请输入弹窗内容" />
+          </Form.Item>
+          <Form.Item
+            label="跳转链接"
+            name={['popupNotice', 'ctaLink']}
+            rules={[{ required: true, message: '请输入跳转链接' }]}
+          >
+            <Input placeholder="请输入跳转链接，例如 /about" />
+          </Form.Item>
         </Card>
 
         <Card title="首页推荐位" loading={isLoading}>

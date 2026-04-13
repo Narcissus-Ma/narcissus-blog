@@ -1,3 +1,4 @@
+import type { PopupNoticeSetting } from '@narcissus/shared';
 import { create } from 'zustand';
 
 interface NavItem {
@@ -9,10 +10,12 @@ interface SiteStore {
   siteName: string;
   siteDescription: string;
   navItems: NavItem[];
+  popupNotice: PopupNoticeSetting;
   setSiteConfig: (payload: {
     siteName: string;
     siteDescription: string;
     navItems: NavItem[];
+    popupNotice: PopupNoticeSetting;
   }) => void;
 }
 
@@ -24,6 +27,14 @@ export const useSiteStore = create<SiteStore>((set) => ({
     { name: '分类', path: '/categories' },
     { name: '标签', path: '/tags' },
   ],
+  popupNotice: {
+    enabled: false,
+    title: '通知',
+    message: '你好呀',
+    ctaText: '查看更多',
+    ctaLink: '/about',
+    homeOnly: true,
+  },
   setSiteConfig(payload) {
     set(payload);
   },

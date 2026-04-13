@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
+  IsBoolean,
   IsArray,
   IsOptional,
   IsString,
@@ -25,6 +26,30 @@ class RecommendationDto {
 
   @IsString()
   articleId!: string;
+}
+
+class PopupNoticeDto {
+  @IsBoolean()
+  enabled!: boolean;
+
+  @IsString()
+  @MaxLength(40)
+  title!: string;
+
+  @IsString()
+  @MaxLength(160)
+  message!: string;
+
+  @IsString()
+  @MaxLength(24)
+  ctaText!: string;
+
+  @IsString()
+  @MaxLength(120)
+  ctaLink!: string;
+
+  @IsBoolean()
+  homeOnly!: boolean;
 }
 
 export class UpdateSiteSettingDto {
@@ -65,4 +90,9 @@ export class UpdateSiteSettingDto {
   @IsOptional()
   @IsString()
   defaultOgImage?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PopupNoticeDto)
+  popupNotice?: PopupNoticeDto;
 }

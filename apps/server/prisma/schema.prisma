@@ -111,6 +111,7 @@ model SiteSetting {
   siteDescription       String   @default("分享一些程序员开发，生活学习记录")
   navItems              Json
   recommendations       Json
+  popupNotice           Json
   defaultSeoTitle       String   @default("Narcissus的个人博客")
   defaultSeoDescription String   @default("分享一些程序员开发，生活学习记录")
   defaultOgImage        String   @default("")

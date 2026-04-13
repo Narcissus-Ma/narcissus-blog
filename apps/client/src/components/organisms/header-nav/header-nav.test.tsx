@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -9,11 +9,13 @@ import { useSiteStore } from '@/stores/site-store';
 
 const mockSearchPublic = vi.fn();
 const mockGetRandomPublicArticle = vi.fn();
+const mockGetPublicList = vi.fn();
 
 vi.mock('@/features/articles/services/articles-service', () => ({
   articlesService: {
     searchPublic: (...args: unknown[]) => mockSearchPublic(...args),
     getRandomPublicArticle: (...args: unknown[]) => mockGetRandomPublicArticle(...args),
+    getPublicList: (...args: unknown[]) => mockGetPublicList(...args),
   },
 }));
 
@@ -52,6 +54,7 @@ describe('HeaderNav', () => {
   beforeEach(() => {
     mockSearchPublic.mockReset();
     mockGetRandomPublicArticle.mockReset();
+    mockGetPublicList.mockReset();
     useSiteStore.setState({
       siteName: 'Narcissus的个人博客',
       siteDescription: '分享一些程序员开发，生活学习记录',
@@ -60,6 +63,14 @@ describe('HeaderNav', () => {
         { name: '分类', path: '/categories' },
         { name: '标签', path: '/tags' },
       ],
+      popupNotice: {
+        enabled: false,
+        title: '',
+        message: '',
+        ctaText: '',
+        ctaLink: '',
+        homeOnly: true,
+      },
     });
   });
 
@@ -68,7 +79,44 @@ describe('HeaderNav', () => {
 
     expect(screen.getByRole('button', { name: '搜索' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '随机文章' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '中控台' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '切换主题' })).toBeInTheDocument();
+  });
+
+  it('点击中控台按钮后应打开快捷面板并展示最新文章', async () => {
+    mockGetPublicList.mockResolvedValue({
+      list: [
+        {
+          id: 'a2',
+          title: '最新文章',
+          slug: 'latest-post',
+          excerpt: '摘要',
+          coverUrl: '',
+          status: 'published',
+          categoryId: 'c1',
+          categorySlug: 'frontend',
+          categoryName: '前端',
+          tagItems: [],
+          tags: [],
+          createdAt: '2026-04-13T00:00:00.000Z',
+          updatedAt: '2026-04-13T00:00:00.000Z',
+          publishedAt: '2026-04-13T00:00:00.000Z',
+        },
+      ],
+      total: 1,
+      page: 1,
+      pageSize: 5,
+    });
+
+    renderHeader();
+
+    fireEvent.click(screen.getByRole('button', { name: '中控台' }));
+
+    expect(await screen.findByText('最新文章')).toBeInTheDocument();
+
+    const dialog = await screen.findByRole('dialog');
+
+    expect(within(dialog).getByRole('link', { name: '隧道' })).toHaveAttribute('href', '/archives');
   });
 
   it('点击搜索按钮后应打开搜索弹窗并显示后端结果', async () => {

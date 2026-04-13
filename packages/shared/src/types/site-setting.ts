@@ -8,6 +8,15 @@ export interface HomeRecommendation {
   articleId: string;
 }
 
+export interface PopupNoticeSetting {
+  enabled: boolean;
+  title: string;
+  message: string;
+  ctaText: string;
+  ctaLink: string;
+  homeOnly: boolean;
+}
+
 export interface SiteSetting {
   siteName: string;
   siteDescription: string;
@@ -16,4 +25,5 @@ export interface SiteSetting {
   defaultSeoTitle: string;
   defaultSeoDescription: string;
   defaultOgImage: string;
+  popupNotice: PopupNoticeSetting;
 }
