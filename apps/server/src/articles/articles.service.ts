@@ -46,6 +46,51 @@ function mapArticleSummary(article: {
 export class ArticlesService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async searchPublic(query: ArticleQueryDto) {
+    const keyword = query.keyword?.trim() ?? '';
+    const page = query.page ?? 1;
+    const pageSize = query.pageSize ?? 5;
+
+    if (!keyword) {
+      return {
+        list: [],
+        total: 0,
+        page,
+        pageSize,
+      };
+    }
+
+    const where: Prisma.ArticleWhereInput = {
+      status: 'published',
+      OR: [
+        { title: { contains: keyword } },
+        { excerpt: { contains: keyword } },
+        { content: { contains: keyword } },
+      ],
+    };
+
+    const [list, total] = await this.prismaService.$transaction([
+      this.prismaService.article.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        include: {
+          category: { select: { id: true, name: true, slug: true } },
+          articleTag: { include: { tag: { select: { id: true, name: true, slug: true } } } },
+        },
+        orderBy: [{ isTop: 'desc' }, { publishedAt: 'desc' }, { createdAt: 'desc' }],
+      }),
+      this.prismaService.article.count({ where }),
+    ]);
+
+    return {
+      list: list.map(mapArticleSummary),
+      total,
+      page,
+      pageSize,
+    };
+  }
+
   async listPublic(query: ArticleQueryDto) {
     const page = query.page ?? 1;
     const pageSize = query.pageSize ?? 10;
@@ -298,5 +343,32 @@ export class ArticlesService {
     return {
       id,
     };
+  }
+
+  async getRandomPublicArticle() {
+    const total = await this.prismaService.article.count({
+      where: { status: 'published' },
+    });
+
+    if (!total) {
+      throw new NotFoundException('暂无可随机访问的文章');
+    }
+
+    const skip = Math.floor(Math.random() * total);
+    const article = await this.prismaService.article.findFirst({
+      where: { status: 'published' },
+      skip,
+      select: {
+        slug: true,
+        title: true,
+      },
+      orderBy: [{ publishedAt: 'desc' }, { createdAt: 'desc' }],
+    });
+
+    if (!article) {
+      throw new NotFoundException('暂无可随机访问的文章');
+    }
+
+    return article;
   }
 }

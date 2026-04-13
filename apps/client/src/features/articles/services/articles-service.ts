@@ -4,6 +4,7 @@ import type {
   ArticleStatus,
   CreateArticleRequest,
   PaginationResult,
+  RandomArticleResult,
   UpdateArticleRequest,
 } from '@narcissus/shared';
 
@@ -18,6 +19,12 @@ export interface ArticleQuery {
   tagSlug?: string;
 }
 
+export interface PublicSearchQuery {
+  keyword: string;
+  page?: number;
+  pageSize?: number;
+}
+
 export interface AdminArticleDetail extends ArticleDetail {
   categoryId: string | null;
   tagIds: string[];
@@ -30,9 +37,17 @@ export const articlesService = {
     const response = await apiClient.get('/articles/public', { params: query });
     return unwrapResponse<PaginationResult<ArticleSummary>>(response);
   },
+  async searchPublic(query: PublicSearchQuery): Promise<PaginationResult<ArticleSummary>> {
+    const response = await apiClient.get('/articles/public/search', { params: query });
+    return unwrapResponse<PaginationResult<ArticleSummary>>(response);
+  },
   async getPublicDetail(slug: string): Promise<ArticleDetail> {
     const response = await apiClient.get(`/articles/public/${slug}`);
     return unwrapResponse<ArticleDetail>(response);
+  },
+  async getRandomPublicArticle(): Promise<RandomArticleResult> {
+    const response = await apiClient.get('/articles/public/random');
+    return unwrapResponse<RandomArticleResult>(response);
   },
   async getAdminList(query: ArticleQuery): Promise<PaginationResult<ArticleSummary>> {
     const response = await apiClient.get('/articles', { params: query });

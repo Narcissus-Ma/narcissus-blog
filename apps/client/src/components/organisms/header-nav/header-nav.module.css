@@ -24,6 +24,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   white-space: nowrap;
+  color: var(--font-color);
 }
 
 .menu {
@@ -51,27 +52,46 @@
   gap: 10px;
 }
 
-.search {
-  width: 220px;
+.actionButton,
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-bg) 90%, #fff 10%);
+  color: var(--font-color);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.actionButton {
+  padding: 0 14px;
 }
 
 .iconButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 34px;
   height: 34px;
-  border: 1px solid var(--card-border);
-  border-radius: 50px;
-  background: var(--card-bg);
-  color: var(--font-color);
-  cursor: pointer;
 }
 
+.actionButton:hover,
 .iconButton:hover {
   border-color: var(--main-color);
   background: var(--main-color);
   color: #fff;
+  transform: translateY(-1px);
+}
+
+.actionButton:disabled,
+.iconButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.actionButton span {
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -79,7 +99,19 @@
     display: none;
   }
 
-  .search {
-    width: 140px;
+  .inner {
+    padding: 0 12px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .actionButton {
+    padding: 0 12px;
+  }
+
+  .actionButton span {
+    display: none;
   }
 }

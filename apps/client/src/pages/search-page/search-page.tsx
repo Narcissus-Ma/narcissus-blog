@@ -13,7 +13,7 @@ export function SearchPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['search-page', keyword],
-    queryFn: () => articlesService.getPublicList({ page: 1, pageSize: 20, keyword }),
+    queryFn: () => articlesService.searchPublic({ page: 1, pageSize: 20, keyword }),
     enabled: Boolean(keyword),
   });
 

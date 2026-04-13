@@ -11,6 +11,11 @@ export interface AdjacentPostSummary {
   slug: string;
 }
 
+export interface RandomArticleResult {
+  title: string;
+  slug: string;
+}
+
 export interface ArticleSummary {
   id: string;
   title: string;

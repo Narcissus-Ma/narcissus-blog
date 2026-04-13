@@ -15,6 +15,18 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Public()
+  @Get('public/search')
+  async searchPublic(@Query() query: ArticleQueryDto) {
+    return this.articlesService.searchPublic(query);
+  }
+
+  @Public()
+  @Get('public/random')
+  async getRandomPublicArticle() {
+    return this.articlesService.getRandomPublicArticle();
+  }
+
+  @Public()
   @Get('public')
   async listPublic(@Query() query: ArticleQueryDto) {
     return this.articlesService.listPublic(query);
