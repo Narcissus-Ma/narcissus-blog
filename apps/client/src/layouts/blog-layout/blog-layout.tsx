@@ -6,6 +6,7 @@ import styles from './blog-layout.module.css';
 import { ClickEffect } from '@/components/atoms/click-effect/click-effect';
 import { Loading } from '@/components/atoms/loading/loading';
 import { UniverseEffect } from '@/components/atoms/universe-effect/universe-effect';
+import { Footer } from '@/components/organisms/footer/footer';
 import { HeaderNav } from '@/components/organisms/header-nav/header-nav';
 import { HeaderPopupNotice } from '@/components/organisms/header-popup-notice/header-popup-notice';
 import { useInitTheme } from '@/hooks/use-init-theme';
@@ -42,6 +43,7 @@ export function BlogLayout() {
       <main className={styles.main}>
         <Outlet />
       </main>
+      {location.pathname === '/' && <Footer />}
       {shouldShowPopup ? (
         <HeaderPopupNotice
           notice={popupNotice}

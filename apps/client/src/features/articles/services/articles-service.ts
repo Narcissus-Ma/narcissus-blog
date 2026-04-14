@@ -33,17 +33,64 @@ export interface AdminArticleDetail extends ArticleDetail {
 }
 
 export const articlesService = {
-  async getPublicList(query: ArticleQuery): Promise<PaginationResult<ArticleSummary>> {
+  async getPublicList(query: ArticleQuery): Promise<PaginationResult<ArticleSummary & { isUnread: boolean; commentCount: number }>> {
     const response = await apiClient.get('/articles/public', { params: query });
-    return unwrapResponse<PaginationResult<ArticleSummary>>(response);
+    const result = unwrapResponse<PaginationResult<ArticleSummary>>(response);
+    
+    // 处理未读标记
+    const readArticles = localStorage.getItem('readArticles');
+    const readArticleIds = readArticles ? JSON.parse(readArticles) : [];
+    
+    // 为每篇文章添加未读标记和评论数
+    const processedList = result.list.map(article => ({
+      ...article,
+      isUnread: !readArticleIds.includes(article.id),
+      commentCount: (article as any).commentCount || 0,
+    }));
+    
+    return {
+      ...result,
+      list: processedList
+    };
   },
-  async searchPublic(query: PublicSearchQuery): Promise<PaginationResult<ArticleSummary>> {
+  async searchPublic(query: PublicSearchQuery): Promise<PaginationResult<ArticleSummary & { isUnread: boolean; commentCount: number }>> {
     const response = await apiClient.get('/articles/public/search', { params: query });
-    return unwrapResponse<PaginationResult<ArticleSummary>>(response);
+    const result = unwrapResponse<PaginationResult<ArticleSummary>>(response);
+    
+    // 处理未读标记
+    const readArticles = localStorage.getItem('readArticles');
+    const readArticleIds = readArticles ? JSON.parse(readArticles) : [];
+    
+    // 为每篇文章添加未读标记和评论数
+    const processedList = result.list.map(article => ({
+      ...article,
+      isUnread: !readArticleIds.includes(article.id),
+      commentCount: (article as any).commentCount || 0,
+    }));
+    
+    return {
+      ...result,
+      list: processedList
+    };
   },
   async getPublicDetail(slug: string): Promise<ArticleDetail> {
     const response = await apiClient.get(`/articles/public/${slug}`);
-    return unwrapResponse<ArticleDetail>(response);
+    const article = unwrapResponse<ArticleDetail>(response);
+    
+    // 标记为已读
+    this.markAsRead(article.id);
+    
+    return article;
+  },
+  // 标记文章为已读
+  markAsRead(articleId: string): void {
+    const readArticles = localStorage.getItem('readArticles');
+    const readArticleIds = readArticles ? JSON.parse(readArticles) : [];
+    
+    if (!readArticleIds.includes(articleId)) {
+      readArticleIds.push(articleId);
+      localStorage.setItem('readArticles', JSON.stringify(readArticleIds));
+    }
   },
   async getRandomPublicArticle(): Promise<RandomArticleResult> {
     const response = await apiClient.get('/articles/public/random');
